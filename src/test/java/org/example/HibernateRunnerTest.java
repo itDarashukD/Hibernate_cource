@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Table;
+import org.example.entity.Role;
 import org.example.entity.User;
 import org.junit.jupiter.api.Test;
 
@@ -21,11 +22,12 @@ class HibernateRunnerTest {
         final User
 	       testUser =
 	       User.builder()
-		      .userName("dara2")
+		      .userName("dara4")
 		      .firstName("dzmitry")
 		      .lastname("aliaks")
 		      .birthDate(LocalDate.of(2000, 01, 01))
 		      .age(31)
+		      .role(Role.ADMIN)
 		      .build();
 
         String sql = """

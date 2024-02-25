@@ -4,6 +4,8 @@ package org.example.entity;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,5 +32,7 @@ public class User {
     private LocalDate birthDate;
 
     private Integer age;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
 }

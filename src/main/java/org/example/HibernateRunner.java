@@ -1,6 +1,7 @@
 package org.example;
 
 import java.time.LocalDate;
+import org.example.entity.Role;
 import org.example.entity.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -23,10 +24,11 @@ public class HibernateRunner {
 	   final User user1 =
 		  User.builder()
 			 .firstName("dzmitry")
-			 .userName("dara")
+			 .userName("dara5")
 			 .lastname("aliaks")
 			 .birthDate(LocalDate.of(2000, 01, 01))
 			 .age(31)
+			 .role(Role.ADMIN)
 			 .build();
 
 	   session.save(user1);
