@@ -39,6 +39,12 @@ public class HibernateRunner {
 
 	   session.save(user1);
 
+	   session.update(user1); // throw exception if user not persent in DB
+	   session.saveOrUpdate(user1); // no exception
+	   session.delete(user1); //remove
+	   session.get(User.class,"dara"); //dara - primary key in table
+
+
 	   session.getTransaction().commit();
         } catch (HibernateException e) {
 	   throw new RuntimeException(e);
