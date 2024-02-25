@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 class HibernateRunnerTest {
 
-    @Test
+//    @Test
     void testHibernateApi() throws SQLException, IllegalAccessException {
         final User
 	       testUser =

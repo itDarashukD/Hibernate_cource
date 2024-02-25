@@ -1,6 +1,8 @@
 package org.example;
 
 import java.time.LocalDate;
+import org.example.converter.CustomBirthdayConverter;
+import org.example.entity.CustomBirthday;
 import org.example.entity.Role;
 import org.example.entity.User;
 import org.hibernate.HibernateException;
@@ -13,6 +15,8 @@ public class HibernateRunner {
     public static void main(String[] args) {
 
         Configuration conf = new Configuration();
+        //add custom date converter
+        conf.addAttributeConverter(CustomBirthdayConverter.class,true);
         conf.configure();
 
         try (final SessionFactory sessionFactory = conf.buildSessionFactory(); final Session session = sessionFactory.openSession();) {
@@ -24,11 +28,13 @@ public class HibernateRunner {
 	   final User user1 =
 		  User.builder()
 			 .firstName("dzmitry")
-			 .userName("dara5")
+			 .userName("customBirthday")
 			 .lastname("aliaks")
 			 .birthDate(LocalDate.of(2000, 01, 01))
 			 .age(31)
 			 .role(Role.ADMIN)
+			 .customBirthday(
+				new CustomBirthday(LocalDate.of(2000, 01, 01)))
 			 .build();
 
 	   session.save(user1);

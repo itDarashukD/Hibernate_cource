@@ -3,6 +3,7 @@ package org.example.entity;
 
 import java.time.LocalDate;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.converter.CustomBirthdayConverter;
 
 @Data
 @NoArgsConstructor
@@ -34,5 +36,12 @@ public class User {
     private Integer age;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    // instead using age and LacalDate birthday we can create custom type :
+    // should create converter : CustomBirthdayConverter
+    @Column(name = "custom_birth_date")
+    @Convert(converter = CustomBirthdayConverter.class)
+    private CustomBirthday customBirthday;
+
 
 }
