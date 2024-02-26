@@ -17,7 +17,9 @@ public class HibernateRunner {
 
     public static void main(String[] args) {
 
-        Company company = Company.builder().name("Google").build();
+        Company companyGoogle = Company.builder().name("Google").build();
+        Company companyYandex = Company.builder().name("Yandex").build();
+        Company companyYahoo = Company.builder().name("Yahoo").build();
 
         Configuration conf = new Configuration();
         //add custom date converter
@@ -32,7 +34,7 @@ public class HibernateRunner {
 
 	   final User user1 = User.builder()
 			 .firstName("dzmitry")
-			 .userName("with id")
+			 .userName("with yahoo")
 			 .lastname("aliaks")
 			 .birthDate(LocalDate.of(2000, 01, 01))
 			 .age(31)
@@ -43,7 +45,7 @@ public class HibernateRunner {
 				.sex("mail")
 				.moneyCount(100l)
 				.build())
-			 .company(company)
+			 .company(companyYahoo)
 			 .build();
 
 //	   session.save(user1);
@@ -59,7 +61,7 @@ public class HibernateRunner {
 
 //	   session.isDirty(); //есть-ли в кеше данные, которые уже есть в кеше, но еще нет в БД
 
-	   session.saveOrUpdate(company);
+//	   session.saveOrUpdate(companyYahoo); // если используем @Cascade.ALL, то сейв во вторую табл будет автоматически
 	   session.saveOrUpdate(user1);
 
 	   session.getTransaction().commit();

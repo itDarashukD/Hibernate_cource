@@ -2,6 +2,7 @@ package org.example.entity;
 
 
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Embedded;
@@ -54,7 +55,7 @@ public class User {
     @Embedded //since it is inner class
     private PersonalInfo personalInfo;
 
-    @ManyToOne                          //many users to one company
+    @ManyToOne (cascade = CascadeType.ALL)    //only All can save both types User and Company to DB                     //many users to one company
     @JoinColumn(name = "company_id")    // the tables user and company going to join by company_id , company_id == id in Company class
     private Company company;
 
