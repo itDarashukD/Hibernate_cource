@@ -44,6 +44,20 @@ public class HibernateRunner {
 	   session.delete(user1); //remove
 	   session.get(User.class,"dara"); //dara - primary key in table
 
+	   /*return from DB only 1 time, second and third call will get from 1st level catch*/
+	   var use1 = session.get(User.class,"dara");
+	   var use2 = session.get(User.class,"dara");
+	   var use3 = session.get(User.class,"dara");
+
+	   /*Когда необходимо принудительно синхронизировать состояние сессии с базой данных, не завершая транзакцию.*/
+	   /*т.е. в кеше естьзначения , а в БД еще нет, добавит в БД, но не делает коммит,т.е. транзакция еще не завершена*/
+	   /*нужно дополнительно делать commit вручную*/
+	   session.flush();
+
+	   /*clear all cash*/
+	   session.clear();
+	   /*remove concrete user from cash*/
+	   session.evict(use1);
 
 	   session.getTransaction().commit();
         } catch (HibernateException e) {
