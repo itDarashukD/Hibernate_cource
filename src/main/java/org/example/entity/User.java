@@ -4,6 +4,7 @@ package org.example.entity;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -42,6 +43,9 @@ public class User {
     @Column(name = "custom_birth_date")
     @Convert(converter = CustomBirthdayConverter.class)
     private CustomBirthday customBirthday;
+
+    @Embedded //since it is inner class
+    private PersonalInfo personalInfo;
 
 
 }
