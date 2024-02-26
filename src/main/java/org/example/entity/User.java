@@ -62,7 +62,7 @@ public class User {
     private PersonalInfo personalInfo;
 
 //    @ManyToOne (cascade = CascadeType.ALL)    //only All can save both types User and Company to DB                     //many users to one company
-    @ManyToOne (cascade = CascadeType.ALL,optional = false, fetch = FetchType.EAGER)    //optional - совпадения для второй сущности при джоине не обязательно должны бытьб Игер - жадная (по-умочанию для сущностей), Lazy - по умолч для Коллекций
+    @ManyToOne ( optional = false, fetch = FetchType.EAGER)    //optional - совпадения для второй сущности при джоине не обязательно должны бытьб Игер - жадная (по-умочанию для сущностей), Lazy - по умолч для Коллекций
     @JoinColumn(name = "company_id")    // the tables user and company going to join by company_id , company_id == id in Company class
     private Company company;
 

@@ -109,28 +109,17 @@ class HibernateRunnerTest {
 
     }
 
+
+
+
     @Test
-    void addNewUserAndCompany() {
+    void testOrphalRemoval() {
         @Cleanup final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
         @Cleanup final Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Company companyOracle = Company.builder().name("Oracle1").build();
-
-        final User
-	       oracleUser =
-	       User.builder()
-		      .userName("oracleUser1")
-		      .firstName("dzmitry")
-		      .lastname("aliaks")
-		      .birthDate(LocalDate.of(2000, 01, 01))
-		      .age(31)
-		      .role(Role.ADMIN)
-		      .build();
-
-        companyOracle.addUser(oracleUser);
-
-        session.save(companyOracle);
+        Company companyOracle =session.get(Company.class, 7);
+        companyOracle.getUsers().removeIf(user -> user.id == 4);
 
         session.getTransaction().commit();
     }

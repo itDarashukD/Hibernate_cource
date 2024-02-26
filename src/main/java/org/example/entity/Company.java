@@ -35,7 +35,7 @@ public class Company {
     private String name;
 
     @Builder.Default //lombok will generate new HashSet<>(); - to avoid NullPointer
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")  //since field in User has name "company"
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company", orphanRemoval = true)  //since field in User has name "company" // orphanRemoval - instead Cascad removal
 //    private List<User> users = new ArrayList<>();
     private Set<User> users = new HashSet<>(); //if we want to use Set<>, we have to ovveride @EqulsAndHascode
 
