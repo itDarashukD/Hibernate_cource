@@ -19,10 +19,12 @@ import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.example.converter.CustomBirthdayConverter;
 
+@EqualsAndHashCode(of = "userName") //if we use exactly Set<User> in Company
 @ToString(exclude = "company")
 @Data
 @NoArgsConstructor
@@ -36,6 +38,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // most usefull
     public Integer  id;
 
+    @Column(unique = true, nullable = false)
     private String userName;
 
     private String firstName;

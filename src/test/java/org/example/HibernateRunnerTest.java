@@ -11,13 +11,29 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Table;
+import lombok.Cleanup;
+import org.example.entity.Company;
 import org.example.entity.Role;
 import org.example.entity.User;
+import org.example.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.Test;
 
 class HibernateRunnerTest {
 
-//    @Test
+    final User
+	   testUser =
+	   User.builder()
+		  .userName("dara4")
+		  .firstName("dzmitry")
+		  .lastname("aliaks")
+		  .birthDate(LocalDate.of(2000, 01, 01))
+		  .age(31)
+		  .role(Role.ADMIN)
+		  .build();
+
+    //    @Test
     void testHibernateApi() throws SQLException, IllegalAccessException {
         final User
 	       testUser =
@@ -76,6 +92,18 @@ class HibernateRunnerTest {
 
         preparedStatement.close();
         connection.close();
+    }
+//@Cleanup - try with resources by lombok
+    @Test
+    void testOneToMany() {
+        @Cleanup final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup final Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        final Company company = session.get(Company.class, 1);
+        System.out.println(company.getUsers());
+
+        session.getTransaction().commit();
 
 
     }
