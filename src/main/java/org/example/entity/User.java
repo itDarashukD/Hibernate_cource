@@ -55,7 +55,8 @@ public class User {
     @Embedded //since it is inner class
     private PersonalInfo personalInfo;
 
-    @ManyToOne (cascade = CascadeType.ALL)    //only All can save both types User and Company to DB                     //many users to one company
+//    @ManyToOne (cascade = CascadeType.ALL)    //only All can save both types User and Company to DB                     //many users to one company
+    @ManyToOne (cascade = CascadeType.REMOVE)    //remove both entities from DB    //many users to one company
     @JoinColumn(name = "company_id")    // the tables user and company going to join by company_id , company_id == id in Company class
     private Company company;
 

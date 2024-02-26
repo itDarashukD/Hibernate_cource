@@ -62,7 +62,10 @@ public class HibernateRunner {
 //	   session.isDirty(); //есть-ли в кеше данные, которые уже есть в кеше, но еще нет в БД
 
 //	   session.saveOrUpdate(companyYahoo); // если используем @Cascade.ALL, то сейв во вторую табл будет автоматически
-	   session.saveOrUpdate(user1);
+//	   session.saveOrUpdate(user1);
+
+	   final User userYahoo = session.get(User.class, 3);
+	   session.delete(userYahoo);
 
 	   session.getTransaction().commit();
         } catch (HibernateException e) {
