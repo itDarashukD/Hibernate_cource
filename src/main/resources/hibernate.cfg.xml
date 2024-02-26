@@ -23,6 +23,7 @@
     <property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
     <!-- specify our entity class (annotated by @Entity) -->
     <mapping class="org.example.entity.User" />
+    <mapping class="org.example.entity.Company" />
 
   </session-factory>
 </hibernate-configuration>

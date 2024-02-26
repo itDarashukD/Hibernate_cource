@@ -11,6 +11,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,5 +54,8 @@ public class User {
     @Embedded //since it is inner class
     private PersonalInfo personalInfo;
 
+    @ManyToOne                          //many users to one company
+    @JoinColumn(name = "company_id")    // the tables user and company going to join by company_id , company_id == id in Company class
+    private Company company;
 
 }
