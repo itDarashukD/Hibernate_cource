@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,8 +34,15 @@ public class Company {
     @Column(unique = true, nullable = false) //this field wii be unique and can't be null
     private String name;
 
-    @OneToMany(mappedBy = "company")  //since field in User has name "company"
+    @Builder.Default //lombok will generate new HashSet<>(); - to avoid NullPointer
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")  //since field in User has name "company"
 //    private List<User> users = new ArrayList<>();
     private Set<User> users = new HashSet<>(); //if we want to use Set<>, we have to ovveride @EqulsAndHascode
+
+
+    public void addUser(User user){
+        users.add(user);
+        user.setCompany(this);
+    }
 
 }
