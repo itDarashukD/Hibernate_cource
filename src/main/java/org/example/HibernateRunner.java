@@ -46,8 +46,8 @@ public class HibernateRunner {
 
 	   /*return from DB only 1 time, second and third call will get from 1st level catch*/
 
-	   user1.setUserName("aaaaaa");
-	   session.refresh(user1); //refresh- обновит кэш ИЗ БД  (аааа - не будет в БД)
+
+	   session.isDirty(); //есть-ли в кеше данные, которые уже есть в кеше, но еще нет в БД
 
 	   session.getTransaction().commit();
         } catch (HibernateException e) {
