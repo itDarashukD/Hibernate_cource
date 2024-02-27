@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import org.example.entity.Company;
 import org.example.entity.Profile;
 import org.example.entity.Role;
 import org.example.entity.User;
+import org.example.entity.UserChat;
 import org.example.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -158,20 +160,44 @@ class HibernateRunnerTest {
         session.getTransaction().commit();
     }
 
+//    @Test
+//    void testManyToMany() {
+//        @Cleanup final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+//        @Cleanup final Session session = sessionFactory.openSession();
+//        session.beginTransaction();
+//
+//        Chat chat = Chat.builder()
+//	       .name("chatNAme")
+//	       .build();
+//
+//        final User user = session.get(User.class, 1);
+//        user.addChat(chat);
+//
+//        session.save(chat);
+//
+//        session.getTransaction().commit();
+//    }
+
+
     @Test
-    void testManyToMany() {
+    void testManyToMany_as2TimesOneToMany() {
         @Cleanup final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
         @Cleanup final Session session = sessionFactory.openSession();
         session.beginTransaction();
 
-        Chat chat = Chat.builder()
-	       .name("chatNAme")
-	       .build();
+        Chat chat = session.get(Chat.class,1);
 
         final User user = session.get(User.class, 1);
-        user.addChat(chat);
 
-        session.save(chat);
+        UserChat userChat = UserChat.builder()
+	       .created_at(Instant.now())
+	       .created_by("Dzmmitry")
+	       .build();
+
+        userChat.setChat(chat);
+        userChat.setUser(user);
+
+        session.save(userChat);
 
         session.getTransaction().commit();
     }

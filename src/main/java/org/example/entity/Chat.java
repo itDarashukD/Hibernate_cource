@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,9 +34,13 @@ public class Chat {
     @Column(unique = true, nullable = false)
     private String name;
 
-    @Builder.Default
-    @ManyToMany(mappedBy = "chats")
-    private List<User> users = new ArrayList<>();
+//    @Builder.Default
+//    @ManyToMany(mappedBy = "chats")
+//    private List<User> users = new ArrayList<>();
 
+    // if we won't use @ManyToMany but will use 2*OneToMany :
+    @Builder.Default
+    @OneToMany(mappedBy = "chat")
+    private List<UserChat> userChats = new ArrayList<>();
 
 }

@@ -19,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -74,15 +75,20 @@ public class User {
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL) //to remove and Profile and User in same request, since ot os oneToOne
     private Profile profile;
 
-    @Builder.Default
-    @ManyToMany
-    @JoinTable(name = "users_chat",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "chat_id"))
-    private List<Chat> chats = new ArrayList<>();
+//    @Builder.Default
+//    @ManyToMany
+//    @JoinTable(name = "users_chat",
+//            joinColumns = @JoinColumn(name = "user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "chat_id"))
+//    private List<Chat> chats = new ArrayList<>();
+//
+//    public void addChat(Chat chat) {
+//        chats.add(chat);
+//       chat.getUsers().add(this);
+//    }
 
-    public void addChat(Chat chat) {
-        chats.add(chat);
-       chat.getUsers().add(this);
-    }
+    // if we won't use @ManyToMany but will use 2*OneToMany :
+    @Builder.Default //то поле userChats будет инициализировано пустым списком (new ArrayList<>()) по умолчанию, если при построении объекта вы явно не установите другое значение для userChats.
+    @OneToMany(mappedBy = "user") //in UserChat presrent mapped field user
+    private List<UserChat> userChats = new ArrayList<>();
 }
