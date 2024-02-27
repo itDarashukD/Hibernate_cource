@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Table;
 import lombok.Cleanup;
+import org.example.entity.Chat;
 import org.example.entity.Company;
 import org.example.entity.Profile;
 import org.example.entity.Role;
@@ -157,5 +158,22 @@ class HibernateRunnerTest {
         session.getTransaction().commit();
     }
 
+    @Test
+    void testManyToMany() {
+        @Cleanup final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup final Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Chat chat = Chat.builder()
+	       .name("chatNAme")
+	       .build();
+
+        final User user = session.get(User.class, 1);
+        user.addChat(chat);
+
+        session.save(chat);
+
+        session.getTransaction().commit();
+    }
 
 }

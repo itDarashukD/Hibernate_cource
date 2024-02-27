@@ -2,6 +2,8 @@ package org.example.entity;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -14,6 +16,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -70,4 +74,15 @@ public class User {
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL) //to remove and Profile and User in same request, since ot os oneToOne
     private Profile profile;
 
+    @Builder.Default
+    @ManyToMany
+    @JoinTable(name = "users_chat",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "chat_id"))
+    private List<Chat> chats = new ArrayList<>();
+
+    public void addChat(Chat chat) {
+        chats.add(chat);
+       chat.getUsers().add(this);
+    }
 }
