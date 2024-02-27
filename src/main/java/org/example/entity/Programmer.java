@@ -2,6 +2,7 @@ package org.example.entity;
 
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@DiscriminatorValue(value = "programmer") // tell the name of the additional field in table for clarifing type
 public class Programmer extends User{
 
 private Language language;

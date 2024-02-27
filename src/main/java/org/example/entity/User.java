@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
+import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -40,12 +41,12 @@ import org.example.converter.CustomBirthdayConverter;
 //@Builder
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type")
 public class User {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)  // most usefull
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)  // only sequence for Table_Per_Class
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // most usefull
     public Integer  id;
 
     @Column(unique = true, nullable = false)
