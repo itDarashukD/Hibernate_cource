@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@DiscriminatorValue(value = "manager") // tell the name of the additional field in table for clarifing type
 public class Manager extends User {
 
     private String project;

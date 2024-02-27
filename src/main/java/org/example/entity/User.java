@@ -41,8 +41,7 @@ import org.example.converter.CustomBirthdayConverter;
 //@Builder
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
