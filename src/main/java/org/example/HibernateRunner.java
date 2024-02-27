@@ -32,21 +32,21 @@ public class HibernateRunner {
 
 	   session.beginTransaction();
 
-	   final User user1 = User.builder()
-			 .firstName("dzmitry")
-			 .userName("with yahoo")
-			 .lastname("aliaks")
-			 .birthDate(LocalDate.of(2000, 01, 01))
-			 .age(31)
-			 .role(Role.ADMIN)
-			 .customBirthday(new CustomBirthday(LocalDate.of(2000, 01, 01)))
-
-			 .personalInfo(PersonalInfo.builder()
-				.sex("mail")
-				.moneyCount(100l)
-				.build())
-			 .company(companyYahoo)
-			 .build();
+//	   final User user1 = User.builder()
+//			 .firstName("dzmitry")
+//			 .userName("with yahoo")
+//			 .lastname("aliaks")
+//			 .birthDate(LocalDate.of(2000, 01, 01))
+//			 .age(31)
+//			 .role(Role.ADMIN)
+//			 .customBirthday(new CustomBirthday(LocalDate.of(2000, 01, 01)))
+//
+//			 .personalInfo(PersonalInfo.builder()
+//				.sex("mail")
+//				.moneyCount(100l)
+//				.build())
+//			 .company(companyYahoo)
+//			 .build();
 
 //	   session.save(user1);
 //	   session.update(user1); // throw exception if user not persent in DB

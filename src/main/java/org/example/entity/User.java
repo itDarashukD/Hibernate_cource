@@ -15,6 +15,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -35,13 +37,15 @@ import org.example.converter.CustomBirthdayConverter;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+//@Builder
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // most usefull
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)  // most usefull
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)  // only sequence for Table_Per_Class
     public Integer  id;
 
     @Column(unique = true, nullable = false)
@@ -88,7 +92,7 @@ public class User {
 //    }
 
     // if we won't use @ManyToMany but will use 2*OneToMany :
-    @Builder.Default //то поле userChats будет инициализировано пустым списком (new ArrayList<>()) по умолчанию, если при построении объекта вы явно не установите другое значение для userChats.
+//    @Builder.Default //то поле userChats будет инициализировано пустым списком (new ArrayList<>()) по умолчанию, если при построении объекта вы явно не установите другое значение для userChats.
     @OneToMany(mappedBy = "user") //in UserChat presrent mapped field user
     private List<UserChat> userChats = new ArrayList<>();
 }

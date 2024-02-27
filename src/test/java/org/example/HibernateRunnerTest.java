@@ -15,7 +15,10 @@ import javax.persistence.Table;
 import lombok.Cleanup;
 import org.example.entity.Chat;
 import org.example.entity.Company;
+import org.example.entity.Language;
+import org.example.entity.Manager;
 import org.example.entity.Profile;
+import org.example.entity.Programmer;
 import org.example.entity.Role;
 import org.example.entity.User;
 import org.example.entity.UserChat;
@@ -215,6 +218,46 @@ class HibernateRunnerTest {
 	        .build();
 
         session.save(company);
+
+        session.getTransaction().commit();
+    }
+
+    @Test
+    void checkInheritance() {
+        @Cleanup final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup final Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        Company company = Company.builder()
+	       .name("h2H2")
+	       .build();
+
+        session.save(company);
+
+        final Programmer
+	       testH2Name =
+	       Programmer.builder()
+		      .userName("testH2Name")
+		      .language(Language.JAVA)
+		      .company(company)
+		      .build();
+
+        final Manager
+	       manager =
+	       Manager.builder()
+		      .userName("testManager")
+		      .project("java project")
+		      .company(company)
+		      .build();
+
+
+        session.save(manager);
+
+        session.flush();
+        session.clear();
+
+        final Programmer programmer = session.get(Programmer.class, 1);
+        session.get(User.class,2);
 
         session.getTransaction().commit();
     }
