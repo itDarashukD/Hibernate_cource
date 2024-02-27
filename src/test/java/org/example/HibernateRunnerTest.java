@@ -202,4 +202,19 @@ class HibernateRunnerTest {
         session.getTransaction().commit();
     }
 
+    @Test
+    void checkIfH2() {
+        @Cleanup final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup final Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+     	Company company = Company.builder()
+	        .name("h2")
+	        .build();
+
+        session.save(company);
+
+        session.getTransaction().commit();
+    }
+
 }
