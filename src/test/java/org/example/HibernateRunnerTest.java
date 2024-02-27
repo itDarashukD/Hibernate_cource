@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import lombok.Cleanup;
 import org.example.entity.Company;
+import org.example.entity.Profile;
 import org.example.entity.Role;
 import org.example.entity.User;
 import org.example.util.HibernateUtil;
@@ -120,6 +121,38 @@ class HibernateRunnerTest {
 
         Company companyOracle =session.get(Company.class, 7);
         companyOracle.getUsers().removeIf(user -> user.id == 4);
+
+        session.getTransaction().commit();
+    }
+
+    @Test
+    void testOneToOne() {
+        @Cleanup final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup final Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        final Company company = session.get(Company.class, 7);
+
+        Profile profile = Profile.builder()
+	       .language("RU")
+	       .street("Sovetskaja")
+	       .build();
+
+        final User
+	       testUser5 =
+	       User.builder()
+		      .userName("dara5")
+		      .firstName("dzmitry5")
+		      .lastname("aliaks5")
+		      .birthDate(LocalDate.of(2000, 01, 01))
+		      .age(31)
+		      .role(Role.ADMIN)
+		      .company(company)
+		      .build();
+
+        session.save(testUser5);
+        profile.setUser(testUser5);
+        session.save(profile);
 
         session.getTransaction().commit();
     }

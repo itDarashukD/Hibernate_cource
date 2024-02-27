@@ -15,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +26,7 @@ import lombok.ToString;
 import org.example.converter.CustomBirthdayConverter;
 
 @EqualsAndHashCode(of = "userName") //if we use exactly Set<User> in Company
-@ToString(exclude = "company")
+@ToString(exclude = {"company","profile"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -65,5 +66,8 @@ public class User {
     @ManyToOne ( optional = false, fetch = FetchType.EAGER)    //optional - совпадения для второй сущности при джоине не обязательно должны бытьб Игер - жадная (по-умочанию для сущностей), Lazy - по умолч для Коллекций
     @JoinColumn(name = "company_id")    // the tables user and company going to join by company_id , company_id == id in Company class
     private Company company;
+
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL) //to remove and Profile and User in same request, since ot os oneToOne
+    private Profile profile;
 
 }
