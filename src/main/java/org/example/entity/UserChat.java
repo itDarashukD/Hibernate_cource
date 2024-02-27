@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "users_chat")
-public class UserChat { // usually better to use additional entity with 2*OneToMany instead 1* ManyToMany
+public class UserChat extends AuditableEntity<Integer>{ // usually better to use additional entity with 2*OneToMany instead 1* ManyToMany
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // most usefull
@@ -45,10 +45,5 @@ public class UserChat { // usually better to use additional entity with 2*OneToM
         this.chat = chat;
         chat.getUserChats().add(this);
     }
-
-
-    private Instant created_at;
-
-    private String created_by;
 
 }

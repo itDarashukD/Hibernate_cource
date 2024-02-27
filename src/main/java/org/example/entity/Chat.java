@@ -25,7 +25,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Chat {
+public class Chat implements BaseEntity<Integer>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,5 +42,6 @@ public class Chat {
     @Builder.Default
     @OneToMany(mappedBy = "chat")
     private List<UserChat> userChats = new ArrayList<>();
+
 
 }
