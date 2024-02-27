@@ -190,9 +190,11 @@ class HibernateRunnerTest {
         final User user = session.get(User.class, 1);
 
         UserChat userChat = UserChat.builder()
-	       .created_at(Instant.now())
-	       .created_by("Dzmmitry")
+
 	       .build();
+
+        userChat.setCreated_by("Anton");
+        userChat.setCreated_at(Instant.now());
 
         userChat.setChat(chat);
         userChat.setUser(user);
