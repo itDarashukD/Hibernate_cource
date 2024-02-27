@@ -134,16 +134,16 @@ class HibernateRunnerTest {
         final Company company = session.get(Company.class, 7);
 
         Profile profile = Profile.builder()
-	       .language("RU")
-	       .street("Sovetskaja")
+	       .language("Bl")
+	       .street("Sovetskaja2")
 	       .build();
 
         final User
 	       testUser5 =
 	       User.builder()
-		      .userName("dara5")
-		      .firstName("dzmitry5")
-		      .lastname("aliaks5")
+		      .userName("dara6")
+		      .firstName("dzmitry6")
+		      .lastname("aliaks6")
 		      .birthDate(LocalDate.of(2000, 01, 01))
 		      .age(31)
 		      .role(Role.ADMIN)
