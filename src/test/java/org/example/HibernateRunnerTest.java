@@ -308,13 +308,17 @@ class HibernateRunnerTest {
 //        final List users = selectFromUserByAgeAndCompany.list();
 
         //NamedQvery
-        final Query selectFromUserByAgeAndCompany = session. createNamedQuery("selectFromUserByAgeAndCompany")
-	       .setParameter("age",1)
-	       .setParameter("company","qwe");
+//        final Query selectFromUserByAgeAndCompany = session. createNamedQuery("selectFromUserByAgeAndCompany")
+//	       .setParameter("age",1)
+//	       .setParameter("company","qwe");
+//
+//        final List users = selectFromUserByAgeAndCompany.list();
 
-        final List users = selectFromUserByAgeAndCompany.list();
 
-        System.out.println(users);
+        //update
+        session.createQuery("update User u set role = 'Admin' where u.age = '1' ")
+	       .executeUpdate();
+
         session.getTransaction().commit();
     }
 
