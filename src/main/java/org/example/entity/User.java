@@ -38,10 +38,9 @@ import org.example.converter.CustomBirthdayConverter;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Builder
+@Builder
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
@@ -92,7 +91,7 @@ public class User {
 //    }
 
     // if we won't use @ManyToMany but will use 2*OneToMany :
-//    @Builder.Default //то поле userChats будет инициализировано пустым списком (new ArrayList<>()) по умолчанию, если при построении объекта вы явно не установите другое значение для userChats.
+    @Builder.Default //то поле userChats будет инициализировано пустым списком (new ArrayList<>()) по умолчанию, если при построении объекта вы явно не установите другое значение для userChats.
     @OneToMany(mappedBy = "user") //in UserChat presrent mapped field user
     private List<UserChat> userChats = new ArrayList<>();
 }

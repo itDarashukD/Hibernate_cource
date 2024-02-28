@@ -38,7 +38,7 @@
 
 <!--    <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>-->
     <!--create - during each test run - drop all, create new tables-->
-    <property name="hibernate.hbm2ddl.auto">create</property>
+<!--    <property name="hibernate.hbm2ddl.auto">create</property>-->
 
     <!-- specify our entity class (annotated by @Entity) -->
     <mapping class="org.example.entity.User" />
@@ -46,8 +46,7 @@
     <mapping class="org.example.entity.Profile" />
     <mapping class="org.example.entity.Chat" />
     <mapping class="org.example.entity.UserChat" />
-    <mapping class="org.example.entity.Programmer" />
-    <mapping class="org.example.entity.Manager" />
+
 
 
 
