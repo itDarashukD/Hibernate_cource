@@ -34,16 +34,15 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.example.converter.CustomBirthdayConverter;
 import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.FetchProfile;
 
-@NamedQuery(name = "selectFromUserByAgeAndCompany",query = """
-	       select u From User u
-	       left join
-	       u.company c
-	       where u.age = :age
-	       and
-	       c.name = :company 
-	               
-	       """)
+
+@FetchProfile(name = "withCompany", fetchOverrides = {
+        @FetchProfile.FetchOverride(entity = User.class,
+                                    association = "company",
+                                    mode = FetchMode.JOIN)
+})
 
 @EqualsAndHashCode(of = "userName") //if we use exactly Set<User> in Company
 @ToString(exclude = {"company","profile"})

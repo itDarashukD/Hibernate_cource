@@ -1,11 +1,7 @@
 package org.example;
 
-import java.time.LocalDate;
 import org.example.converter.CustomBirthdayConverter;
 import org.example.entity.Company;
-import org.example.entity.CustomBirthday;
-import org.example.entity.PersonalInfo;
-import org.example.entity.Role;
 import org.example.entity.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -64,8 +60,13 @@ public class HibernateRunner {
 //	   session.saveOrUpdate(companyYahoo); // если используем @Cascade.ALL, то сейв во вторую табл будет автоматически
 //	   session.saveOrUpdate(user1);
 
-	   final User userYahoo = session.get(User.class, 3);
-	   session.delete(userYahoo);
+//	   final User userYahoo = session.get(User.class, 3);
+//	   session.delete(userYahoo);
+
+	   session.enableFetchProfile("withCompany");
+	   final User userYahoo = session.get(User.class, 1);
+	   System.out.println(userYahoo.getCompany().getName());
+
 
 	   session.getTransaction().commit();
         } catch (HibernateException e) {
