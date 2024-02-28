@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
@@ -23,7 +22,6 @@ import org.example.entity.UserChat;
 import org.example.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.junit.jupiter.api.Test;
 
 class HibernateRunnerTest {
@@ -314,10 +312,20 @@ class HibernateRunnerTest {
 //
 //        final List users = selectFromUserByAgeAndCompany.list();
 
-
         //update
-        session.createQuery("update User u set role = 'Admin' where u.age = '1' ")
-	       .executeUpdate();
+        session.createQuery("update User u set role = 'Admin' where u.age = '1' ").executeUpdate();
+
+        session.getTransaction().commit();
+    }
+
+
+    @Test
+    void nPlus1ProblemByJoinFetch() {
+        @Cleanup final SessionFactory sessionFactory = HibernateUtil.buildSessionFactory();
+        @Cleanup final Session session = sessionFactory.openSession();
+        session.beginTransaction();
+
+        session.createQuery("select u from User u join fetch u.payments", User.class).list();
 
         session.getTransaction().commit();
     }
