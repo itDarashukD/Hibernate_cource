@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,13 +15,12 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -34,18 +32,16 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.example.converter.CustomBirthdayConverter;
 import org.hibernate.annotations.BatchSize;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.FetchProfile;
 
-
-@FetchProfile(name = "withCompany", fetchOverrides = {
-        @FetchProfile.FetchOverride(entity = User.class,
-                                    association = "company",
-                                    mode = FetchMode.JOIN)
-})
+//whole configuration for each relations
+@NamedEntityGraph(name = "WithCompany",
+        attributeNodes = {@NamedAttributeNode("company"),
+                          @NamedAttributeNode(value = "userChats", subgraph = "chats")},
+        subgraphs= {@NamedSubgraph(name = "chats",
+                                   attributeNodes = @NamedAttributeNode("chat"))})
 
 @EqualsAndHashCode(of = "userName") //if we use exactly Set<User> in Company
-@ToString(exclude = {"company","profile"})
+@ToString(exclude = {"company", "profile"})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -56,7 +52,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // most usefull
-    public Integer  id;
+    public Integer id;
 
     @Column(unique = true, nullable = false)
     private String userName;
@@ -81,12 +77,15 @@ public class User {
     @Embedded //since it is inner class
     private PersonalInfo personalInfo;
 
-//    @ManyToOne (cascade = CascadeType.ALL)    //only All can save both types User and Company to DB                     //many users to one company
-    @ManyToOne ( optional = false, fetch = FetchType.EAGER)    //optional - совпадения для второй сущности при джоине не обязательно должны бытьб Игер - жадная (по-умочанию для сущностей), Lazy - по умолч для Коллекций
-    @JoinColumn(name = "company_id")    // the tables user and company going to join by company_id , company_id == id in Company class
+    //    @ManyToOne (cascade = CascadeType.ALL)    //only All can save both types User and Company to DB                     //many users to one company
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    //optional - совпадения для второй сущности при джоине не обязательно должны бытьб Игер - жадная (по-умочанию для сущностей), Lazy - по умолч для Коллекций
+    @JoinColumn(name = "company_id")
+    // the tables user and company going to join by company_id , company_id == id in Company class
     private Company company;
 
-    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL) //to remove and Profile and User in same request, since ot os oneToOne
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    //to remove and Profile and User in same request, since ot os oneToOne
     private Profile profile;
 
 //    @Builder.Default
@@ -102,12 +101,14 @@ public class User {
 //    }
 
     // if we won't use @ManyToMany but will use 2*OneToMany :
-    @Builder.Default //то поле userChats будет инициализировано пустым списком (new ArrayList<>()) по умолчанию, если при построении объекта вы явно не установите другое значение для userChats.
+    @Builder.Default
+    //то поле userChats будет инициализировано пустым списком (new ArrayList<>()) по умолчанию, если при построении объекта вы явно не установите другое значение для userChats.
     @OneToMany(mappedBy = "user") //in UserChat presrent mapped field user
     private List<UserChat> userChats = new ArrayList<>();
 
-    @BatchSize(size = 3) // fetch wired  with User Payment entityes, when calling User from DB banches by 3 element
+    @BatchSize(size = 3)
+    // fetch wired  with User Payment entityes, when calling User from DB banches by 3 element
     @Builder.Default
-    @OneToMany(mappedBy = "receiver",fetch = FetchType.LAZY)
-    private List<Payment>payments = new ArrayList<>();
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
+    private List<Payment> payments = new ArrayList<>();
 }
