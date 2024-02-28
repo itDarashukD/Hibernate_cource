@@ -293,20 +293,24 @@ class HibernateRunnerTest {
 //	       .setParameter("company","qwe");
 
         //get by age and company with Join by hand
-        final Query selectFromUserByAgeAndCompany = session.createQuery(
-        """
-	       select u From User u
-	       left join
-	       u.company c
-	       where u.age = :age
-	       and
-	       c.name = :company 
-	               
-	       """)
+//        final Query selectFromUserByAgeAndCompany = session.createQuery(
+//        """
+//	       select u From User u
+//	       left join
+//	       u.company c
+//	       where u.age = :age
+//	       and
+//	       c.name = :company
+//
+//	       """)
+//	       .setParameter("age",1)
+//	       .setParameter("company","qwe");
+//        final List users = selectFromUserByAgeAndCompany.list();
+
+        //NamedQvery
+        final Query selectFromUserByAgeAndCompany = session. createNamedQuery("selectFromUserByAgeAndCompany")
 	       .setParameter("age",1)
 	       .setParameter("company","qwe");
-
-
 
         final List users = selectFromUserByAgeAndCompany.list();
 

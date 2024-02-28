@@ -22,6 +22,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -32,6 +33,16 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.example.converter.CustomBirthdayConverter;
+
+@NamedQuery(name = "selectFromUserByAgeAndCompany",query = """
+	       select u From User u
+	       left join
+	       u.company c
+	       where u.age = :age
+	       and
+	       c.name = :company 
+	               
+	       """)
 
 @EqualsAndHashCode(of = "userName") //if we use exactly Set<User> in Company
 @ToString(exclude = {"company","profile"})
