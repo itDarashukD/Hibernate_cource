@@ -88,6 +88,19 @@
       <scope>test</scope>
     </dependency>
 
+<!--    for writing queries to BD by Criteria with DSL, more usefull with "QUser_"-->
+    <dependency>
+      <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-apt</artifactId>
+      <version>5.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.querydsl</groupId>
+      <artifactId>querydsl-jpa</artifactId>
+      <version>5.0.0</version>
+    </dependency>
+
 
   </dependencies>
 
@@ -106,6 +119,7 @@
               <artifactId>lombok</artifactId>
               <version>1.18.26</version>
             </path>
+
           </annotationProcessorPaths>
         </configuration>
       </plugin>
@@ -119,6 +133,30 @@
           <warName>example</warName> <!-- Specify the WAR file name -->
           <!-- Additional configurations like <failOnMissingWebXml> or <webResources> can be specified here -->
         </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.mysema.maven</groupId>
+        <artifactId>apt-maven-plugin</artifactId>
+        <version>1.1.3</version> <!-- Use the latest version available -->
+        <executions>
+          <execution>
+            <id>process</id>
+            <goals>
+              <goal>process</goal>
+            </goals>
+            <configuration>
+<!--              here wil be generated classes-->
+<!--    for writing queries to BD by Criteria with DSL, more usefull with "QUser"-->
+               <outputDirectory>target/generated-sources/java</outputDirectory>
+               <processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+              <options>
+                <querydsl.entityAccessors>true</querydsl.entityAccessors>
+                <querydsl.useFields>false</querydsl.useFields>
+              </options>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
 
     </plugins>
