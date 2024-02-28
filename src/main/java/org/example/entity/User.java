@@ -33,6 +33,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.example.converter.CustomBirthdayConverter;
+import org.hibernate.annotations.BatchSize;
 
 @NamedQuery(name = "selectFromUserByAgeAndCompany",query = """
 	       select u From User u
@@ -105,4 +106,9 @@ public class User {
     @Builder.Default //то поле userChats будет инициализировано пустым списком (new ArrayList<>()) по умолчанию, если при построении объекта вы явно не установите другое значение для userChats.
     @OneToMany(mappedBy = "user") //in UserChat presrent mapped field user
     private List<UserChat> userChats = new ArrayList<>();
+
+    @BatchSize(size = 3) // fetch wired  with User Payment entityes, when calling User from DB banches by 3 element
+    @Builder.Default
+    @OneToMany(mappedBy = "receiver",fetch = FetchType.LAZY)
+    private List<Payment>payments = new ArrayList<>();
 }
