@@ -1,21 +1,13 @@
 package org.example;
 
-import java.time.LocalDate;
-import java.util.Map;
 import org.example.converter.CustomBirthdayConverter;
 import org.example.entity.Company;
-import org.example.entity.CustomBirthday;
-import org.example.entity.PersonalInfo;
-import org.example.entity.Role;
-import org.example.entity.User;
-import org.example.entity.UserChat;
+import org.example.entity.Payment;
 import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.graph.GraphSemantic;
-import org.hibernate.graph.RootGraph;
-import org.hibernate.graph.SubGraph;
 
 
 public class HibernateRunner {
@@ -72,32 +64,43 @@ public class HibernateRunner {
 //	   final User userYahoo = session.get(User.class, 3);
 //	   session.delete(userYahoo);
 
+	   //entity Graph
+//
+//	   final RootGraph<User> entityGraph = session.createEntityGraph(User.class);
+//	   entityGraph.addAttributeNodes("company","userChats");
+//	   final SubGraph<UserChat> userChats =
+//		  entityGraph.addSubgraph("userChats", UserChat.class);
+//	   userChats.addAttributeNodes("chat");
+//
+//	   //for entitys
+//	   final Map<String, Object> properties =
+//		  Map.of(GraphSemantic.LOAD.getJpaHintName(), entityGraph);
+//
+//	   final User user = session.find(User.class, 1, properties);
+//	   System.out.println(user.getCompany().getName());
+//	   System.out.println(user.getUserChats().size());
+//
+//	   //for HQL
+//	   session.createQuery("select u from User u ", User.class)
+//		  .setHint(GraphSemantic.LOAD.getJpaHintName(),entityGraph).list();
+//	   System.out.println(user.getCompany().getName());
+//	   System.out.println(user.getUserChats().size());
+
+	   Session session1 = sessionFactory.openSession();
 
 
-			//entity Graph
+	   // 2 clients trying to get same ticket in the same time
+	   final Payment payment = session.get(Payment.class, 1, LockMode.OPTIMISTIC);
+	   payment.setAmount(payment.getAmount()+10);
 
-	   final RootGraph<User> entityGraph = session.createEntityGraph(User.class);
-	   entityGraph.addAttributeNodes("company","userChats");
-	   final SubGraph<UserChat> userChats =
-		  entityGraph.addSubgraph("userChats", UserChat.class);
-	   userChats.addAttributeNodes("chat");
-
-	   //for entitys
-	   final Map<String, Object> properties =
-		  Map.of(GraphSemantic.LOAD.getJpaHintName(), entityGraph);
-
-	   final User user = session.find(User.class, 1, properties);
-	   System.out.println(user.getCompany().getName());
-	   System.out.println(user.getUserChats().size());
-
-	   //for HQL
-	   session.createQuery("select u from User u ", User.class)
-		  .setHint(GraphSemantic.LOAD.getJpaHintName(),entityGraph).list();
-	   System.out.println(user.getCompany().getName());
-	   System.out.println(user.getUserChats().size());
-
+	   final Payment payment1 = session1.get(Payment.class, 1,LockMode.OPTIMISTIC);
+	   payment1.setAmount(payment1.getAmount()+30);
+		// should be Optimistic lock exception, например : два клиента хотят одновременно заказать билет на самолет, чтобы не произошло неприятностей, оди клиент полусит булет, а второй получит ответ - извините
+	   	// можно испольщовать уровень изоляции транзакции - Serialzzable, но это очень дорого, по этому используются Локи
+	   	// это исключение будет проброшено выше, обработано, и клиент полуить ответ- сори
 
 	   session.getTransaction().commit();
+	   session1.getTransaction().commit();
         } catch (HibernateException e) {
 	   throw new RuntimeException(e);
         }

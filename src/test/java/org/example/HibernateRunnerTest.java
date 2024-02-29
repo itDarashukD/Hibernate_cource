@@ -8,9 +8,11 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
+import javax.persistence.Query;
 import javax.persistence.Table;
 import lombok.Cleanup;
 import org.example.entity.Chat;
@@ -268,9 +270,9 @@ class HibernateRunnerTest {
         session.beginTransaction();
 
 //        get all users,
-//        final Query selectUFromUserU = session.createQuery("select u From User u");
-//        final List users = selectUFromUserU.list();
-//        final List users = selectUFromUserU.list();
+        final Query selectUFromUserU = session.createQuery("select u From User u");
+        final List users = selectUFromUserU.list();
+        final List users = selectUFromUserU.list();
 
         //get by age
 //        final Query selectFromUserByAge = session.createQuery("""

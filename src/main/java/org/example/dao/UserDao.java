@@ -1,5 +1,7 @@
 package org.example.dao;
 
+import static org.example.entity.QPayment.payment;
+
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
@@ -10,6 +12,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.example.entity.Payment;
+import org.example.entity.QPayment;
 import org.example.entity.QUser;
 import org.example.entity.User;
 import org.hibernate.Session;
@@ -93,56 +97,53 @@ public class UserDao {
 //    // by CriteriaDSL
 //    public List<User> findAllPaymentsBySexWithDSL(Session session, String sex) {
 //        return new JPAQuery<Payment>(session)
-//	       .select(QUser.payment)
+//	       .select(payment)
 //	       .from(QUser.user.company())
 //	       .join(QUser.user.company().users, QUser.user)
-//	       .join(QUser.user.payments(), QUser.payment)
-//	       .where(QUser.user.company().name.eq(companyName))
+//	       .join(QUser.user.payments, payment)
+//	       .where(QUser.user.personalInfo().sex.eq(sex))
 //	       .orderBy(QUser.user.personalInfo().sex.asc(),payment.amount.asc())
 //	       .fetch();
 //    }
 
 
     //    // by CriteriaDSL
-//    public Double findAvaragePaymentAmountByFirsAndLastName(Session session, String firstname, String  lastname) {
-//        return new JPAQuery<Double>(session)
-//	       .select(QUser.payment.amount.avg())
-//	       .from(QUser.payment)
-//	       .join(QUser.payment.receiver(), QUser.user)
-//	       .where(QUser.user.firstName.eq(firstname)
-//	       .and(QUser.user.lastname.eq(lastname)))
-//	       .fetchOne();
-//    }
+    public Double findAvaragePaymentAmountByFirsAndLastName(Session session, String firstname, String  lastname) {
+        return new JPAQuery<Double>(session)
+	       .select(payment.amount.avg())
+	       .from(payment)
+	       .join(payment.receiver(), QUser.user)
+	       .where(QUser.user.firstName.eq(firstname)
+	       .and(QUser.user.lastname.eq(lastname)))
+	       .fetchOne();
+    }
 
     //    // by CriteriaDSL
-//    public List<Tuple> findACompanyNamesWithAvarageUserPaymantsOrderedByConpanyName(Session session) {
-//        return new JPAQuery<Tuple>(session)
-//	       .select(QUser.user.company().name, payment.amount.avg())
-//	       .from(QUser.user.company())
-//	       .join(QUser.user.company().users, QUser.user)
-//	       .join(QUser.user.payments, QUser.payment)
 //	       .groupBy(QUser.user.company().name)
-//	       .orderBy(QUser.user.company().name.asc())
-//	       .fetch();
-//    }
+    public List<Tuple> findACompanyNamesWithAvarageUserPaymantsOrderedByConpanyName(Session session) {
+        return new JPAQuery<Tuple>(session)
+	       .select(QUser.user.company().name, payment.amount.avg())
+	       .from(QUser.user.company())
+	       .join(QUser.user.company().users, QUser.user)
+	       .join(QUser.user.payments, QPayment.payment)
+	       .orderBy(QUser.user.company().name.asc())
+	       .fetch();
+    }
 
     //    // by CriteriaDSL
-//    public List<Tuple> IsItPosible(Session session) {
-//        return new JPAQuery<Tuple>(session)
-//	       .select(QUser.user, payment.amount.avg())
-//	       .from(QUser.user)
-//	       .join(QUser.user.payments, QPayment.payment)
-//	       .groupBy(QUser.user.id)
-//	       .having(QPayment.amount.avg().gt(  //gt - greate then (больше чем)
-//
-//		      new JPAQuery<Double>(session)
-//			     .select(QPayment.payment.amount.avg())
-//			     .from(QPayment.payment)
-//		      )
-//
-//	       )
-//	       .orderBy(QUser.user.firstName.asc())
-//	       .fetch();
-//
-//    }
+    public List<Tuple> IsItPosible(Session session) {
+        return new JPAQuery<Tuple>(session).select(QUser.user, payment.amount.avg())
+	       .from(QUser.user)
+	       .join(QUser.user.payments, payment)
+	       .groupBy(QUser.user.id)
+	       .having(payment.amount.avg().gt(  //gt - greate then (больше чем)
+
+		      new JPAQuery<Double>(session).select(payment.amount.avg())
+			     .from(payment))
+
+	       )
+	       .orderBy(QUser.user.firstName.asc())
+	       .fetch();
+
+    }
 }
