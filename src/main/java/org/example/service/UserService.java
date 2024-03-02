@@ -1,6 +1,12 @@
 package org.example.service;
 
 import java.util.Optional;
+import java.util.Set;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import lombok.RequiredArgsConstructor;
 import org.example.dao.UserRepository;
 import org.example.dto.UserCreateDto;
@@ -32,6 +38,16 @@ public class UserService {
     }
 
     public Integer create(UserCreateDto userDto){
+// validation :
+        //all validation exceptions will be here in this SET
+        final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        final Validator validator = validatorFactory.getValidator();
+        final Set<ConstraintViolation<UserCreateDto>> validationResult = validator.validate(userDto);
+        if (!validationResult.isEmpty()) {
+            throw new ConstraintViolationException(validationResult);
+        }
+
+
         final User user = userCreateMapper.mapFrom(userDto);
         final User savedUser = repository.save(user);
 

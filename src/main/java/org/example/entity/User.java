@@ -75,8 +75,6 @@ public class User implements BaseEntity<Integer> {
     @Convert(converter = CustomBirthdayConverter.class)
     private CustomBirthday customBirthday;
 
-    @Valid //added since inside this class the  @NotNull is present as validation
-           // good practise is to use it in DTO's
     @Embedded //since it is inner class
     private PersonalInfo personalInfo;
 
