@@ -271,8 +271,8 @@ class HibernateRunnerTest {
 
 //        get all users,
         final Query selectUFromUserU = session.createQuery("select u From User u");
-        final List users = selectUFromUserU.list();
-        final List users = selectUFromUserU.list();
+//        final List users = selectUFromUserU.list();
+//        final List users = selectUFromUserU.list();
 
         //get by age
 //        final Query selectFromUserByAge = session.createQuery("""

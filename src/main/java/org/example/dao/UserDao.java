@@ -140,7 +140,6 @@ public class UserDao {
 
 		      new JPAQuery<Double>(session).select(payment.amount.avg())
 			     .from(payment))
-
 	       )
 	       .orderBy(QUser.user.firstName.asc())
 	       .fetch();
