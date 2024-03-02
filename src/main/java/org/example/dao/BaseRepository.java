@@ -21,7 +21,7 @@ public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> imp
 
     @Override
     public E save(E value) {
-        @Cleanup final Session session = factory.openSession();
+      final Session session = factory.getCurrentSession();
         session.save(value);
 
         return value;
@@ -29,7 +29,7 @@ public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> imp
 
     @Override
     public List<E> findAll() {
-        @Cleanup final Session session = factory.openSession();
+      final Session session = factory.getCurrentSession();
         final CriteriaQuery<E> criteria = session.getCriteriaBuilder().createQuery(clazz);
         criteria.from(clazz);
 
@@ -41,7 +41,7 @@ public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> imp
 
     @Override
     public Optional<E> findById(E id) {
-        @Cleanup final Session session = factory.openSession();
+      final Session session = factory.getCurrentSession();
         final E entity = session.find(clazz, id);
 
         return Optional.ofNullable(entity);
@@ -50,13 +50,13 @@ public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> imp
     @Override
     public void update(E entity) {
 
-        @Cleanup final Session session = factory.openSession();
+      final Session session = factory.getCurrentSession();
         session.merge(entity);
     }
 
     @Override
     public void delete(K id) {
-        @Cleanup final Session session = factory.openSession();
+      final Session session = factory.getCurrentSession();
         final E entity = session.find(clazz, id);
         session.delete(entity);
     }
