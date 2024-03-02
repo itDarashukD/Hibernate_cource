@@ -23,8 +23,8 @@ public class UserReadMapper implements Mapper<User, UserReadDto> {
 	       from.getPersonalInfo(),
 	       companyReadMapper.mapFrom(from.getCompany()),
 	       from.getAge(),
-	       from.getUserChats()
-        );
+	       from.getPayments(),
+	       from.getUserChats());
     }
 
 }

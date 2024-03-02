@@ -24,6 +24,7 @@ import javax.persistence.NamedSubgraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -74,6 +75,8 @@ public class User implements BaseEntity<Integer> {
     @Convert(converter = CustomBirthdayConverter.class)
     private CustomBirthday customBirthday;
 
+    @Valid //added since inside this class the  @NotNull is present as validation
+           // good practise is to use it in DTO's
     @Embedded //since it is inner class
     private PersonalInfo personalInfo;
 
