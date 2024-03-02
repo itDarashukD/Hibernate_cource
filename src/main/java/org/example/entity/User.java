@@ -48,7 +48,7 @@ import org.hibernate.annotations.BatchSize;
 @Builder
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements BaseEntity<Integer> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)  // most usefull
