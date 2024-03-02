@@ -9,7 +9,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-
 public class HibernateRunner {
 
     public static void main(String[] args) {
@@ -106,12 +105,16 @@ public class HibernateRunner {
 //        }
 //    }
 
+
+        //CRUD
+
         SessionFactory factory = HibernateUtil.buildSessionFactory();
         try (Session session = factory.getCurrentSession()) {
 
 	   session.beginTransaction();
 
-	   var payment = new PaymentRepository(factory);
+//	   var payment = new PaymentRepository(factory);
+	   var payment = new PaymentRepository(session);
 	   final Optional<Payment> byId = payment.findById(1);
 	   System.out.printf(byId.get().toString());
 

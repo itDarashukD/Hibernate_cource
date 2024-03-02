@@ -24,7 +24,7 @@ import org.hibernate.annotations.OptimisticLocking;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "receiver")
+//@ToString(exclude = "receiver")
 @Builder
 @Entity
 @OptimisticLocking(type = OptimisticLockType.VERSION)  //more usefull
