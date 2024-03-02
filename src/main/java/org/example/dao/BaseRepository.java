@@ -68,9 +68,11 @@ public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> imp
 //        final Session session = factory.getCurrentSession();
 //        final E entity = session.find(clazz, id);
 //        session.delete(entity);
+//        session.flush();
 
         final E entity = manager.find(clazz, id);
         manager.remove(entity);
+        manager.flush();
     }
 
 

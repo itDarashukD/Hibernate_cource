@@ -1,6 +1,7 @@
 package org.example;
 
 
+import java.lang.reflect.Proxy;
 import java.util.Optional;
 import org.example.dao.PaymentRepository;
 import org.example.entity.Payment;
@@ -105,11 +106,14 @@ public class HibernateRunner {
 //        }
 //    }
 
-
         //CRUD
 
-        SessionFactory factory = HibernateUtil.buildSessionFactory();
-        try (Session session = factory.getCurrentSession()) {
+        try (SessionFactory factory = HibernateUtil.buildSessionFactory();) {
+	   Session session =
+		  (Session) Proxy.newProxyInstance(
+			 SessionFactory.class.getClassLoader(),
+			 new Class[]{Session.class},
+			 (proxy, method, args1) -> method.invoke(factory.getCurrentSession(), args1));
 
 	   session.beginTransaction();
 
