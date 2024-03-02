@@ -16,6 +16,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
 
@@ -23,6 +24,7 @@ import org.hibernate.annotations.OptimisticLocking;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "receiver")
 @Builder
 @Entity
 @OptimisticLocking(type = OptimisticLockType.VERSION)  //more usefull

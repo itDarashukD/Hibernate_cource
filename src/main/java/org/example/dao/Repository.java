@@ -12,7 +12,7 @@ public interface Repository<K extends Serializable, E extends BaseEntity<K>> {
 
     List<E> findAll();
 
-    Optional<E> findById(E id);
+    Optional<E> findById(K id);
 
     void update(E value);
 

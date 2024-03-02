@@ -1,33 +1,33 @@
 package org.example;
 
-import org.example.converter.CustomBirthdayConverter;
-import org.example.entity.Company;
+
+import java.util.Optional;
+import org.example.dao.PaymentRepository;
 import org.example.entity.Payment;
+import org.example.util.HibernateUtil;
 import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
 
 public class HibernateRunner {
 
     public static void main(String[] args) {
 
-        Company companyGoogle = Company.builder().name("Google").build();
-        Company companyYandex = Company.builder().name("Yandex").build();
-        Company companyYahoo = Company.builder().name("Yahoo").build();
-
-        Configuration conf = new Configuration();
-        //add custom date converter
-        conf.addAttributeConverter(CustomBirthdayConverter.class, true);
-        conf.configure();
-
-        try (final SessionFactory sessionFactory = conf.buildSessionFactory(); final Session session = sessionFactory.openSession();) {
-
-	   System.out.println("ok");
-
-	   session.beginTransaction();
+//        Company companyGoogle = Company.builder().name("Google").build();
+//        Company companyYandex = Company.builder().name("Yandex").build();
+//        Company companyYahoo = Company.builder().name("Yahoo").build();
+//
+//        Configuration conf = new Configuration();
+//        //add custom date converter
+//        conf.addAttributeConverter(CustomBirthdayConverter.class, true);
+//        conf.configure();
+//
+//        try (final SessionFactory sessionFactory = conf.buildSessionFactory(); final Session session = sessionFactory.openSession();) {
+//
+//	   System.out.println("ok");
+//
+//	   session.beginTransaction();
 
 //	   final User user1 = User.builder()
 //			 .firstName("dzmitry")
@@ -51,7 +51,7 @@ public class HibernateRunner {
 //	   session.delete(user1); //remove
 //	   session.get(User.class,"dara"); //dara - primary key in table
 
-	   /*return from DB only 1 time, second and third call will get from 1st level catch*/
+        /*return from DB only 1 time, second and third call will get from 1st level catch*/
 
 //	   user1.setUserName("aaaaaa");
 //	   session.refresh(user1); //refresh- обновит кэш ИЗ БД  (аааа - не будет в БД)
@@ -64,7 +64,7 @@ public class HibernateRunner {
 //	   final User userYahoo = session.get(User.class, 3);
 //	   session.delete(userYahoo);
 
-	   //entity Graph
+        //entity Graph
 //
 //	   final RootGraph<User> entityGraph = session.createEntityGraph(User.class);
 //	   entityGraph.addAttributeNodes("company","userChats");
@@ -86,23 +86,39 @@ public class HibernateRunner {
 //	   System.out.println(user.getCompany().getName());
 //	   System.out.println(user.getUserChats().size());
 
-	   Session session1 = sessionFactory.openSession();
+//	   Session session1 = sessionFactory.openSession();
+//
+//
+//	   // 2 clients trying to get same ticket in the same time
+//	   final Payment payment = session.get(Payment.class, 1, LockMode.OPTIMISTIC);
+//	   payment.setAmount(payment.getAmount()+10);
+//
+//	   final Payment payment1 = session1.get(Payment.class, 1,LockMode.OPTIMISTIC);
+//	   payment1.setAmount(payment1.getAmount()+30);
+//		// should be Optimistic lock exception, например : два клиента хотят одновременно заказать билет на самолет, чтобы не произошло неприятностей, оди клиент полусит булет, а второй получит ответ - извините
+//	   	// можно испольщовать уровень изоляции транзакции - Serialzzable, но это очень дорого, по этому используются Локи
+//	   	// это исключение будет проброшено выше, обработано, и клиент полуить ответ- сори
+//
+//	   session.getTransaction().commit();
+//	   session1.getTransaction().commit();
+//        } catch (HibernateException e) {
+//	   throw new RuntimeException(e);
+//        }
+//    }
+
+        SessionFactory factory = HibernateUtil.buildSessionFactory();
+        try (Session session = factory.getCurrentSession()) {
+
+	   session.beginTransaction();
+
+	   var payment = new PaymentRepository(factory);
+	   final Optional<Payment> byId = payment.findById(1);
+	   System.out.printf(byId.get().toString());
 
 
-	   // 2 clients trying to get same ticket in the same time
-	   final Payment payment = session.get(Payment.class, 1, LockMode.OPTIMISTIC);
-	   payment.setAmount(payment.getAmount()+10);
-
-	   final Payment payment1 = session1.get(Payment.class, 1,LockMode.OPTIMISTIC);
-	   payment1.setAmount(payment1.getAmount()+30);
-		// should be Optimistic lock exception, например : два клиента хотят одновременно заказать билет на самолет, чтобы не произошло неприятностей, оди клиент полусит булет, а второй получит ответ - извините
-	   	// можно испольщовать уровень изоляции транзакции - Serialzzable, но это очень дорого, по этому используются Локи
-	   	// это исключение будет проброшено выше, обработано, и клиент полуить ответ- сори
-
-	   session.getTransaction().commit();
-	   session1.getTransaction().commit();
         } catch (HibernateException e) {
 	   throw new RuntimeException(e);
         }
+
     }
 }

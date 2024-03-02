@@ -21,12 +21,23 @@
     <property name="format_sql">true</property>
 
     <property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
+
+<!--    to user getCurrentSession instead of openSession, to use all CRUD in the same session, if session is not exist it going to be created-->
+    <property name="hibernate.current_session_context_class">thread</property>
+
+
+
+
+
     <!-- specify our entity class (annotated by @Entity) -->
     <mapping class="org.example.entity.User" />
     <mapping class="org.example.entity.Company" />
     <mapping class="org.example.entity.Profile" />
     <mapping class="org.example.entity.Chat" />
     <mapping class="org.example.entity.UserChat" />
+
+
+
 
 
   </session-factory>

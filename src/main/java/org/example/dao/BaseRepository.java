@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.persistence.criteria.CriteriaQuery;
 import lombok.AllArgsConstructor;
-import lombok.Cleanup;
-import lombok.RequiredArgsConstructor;
 import org.example.entity.BaseEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -21,7 +19,7 @@ public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> imp
 
     @Override
     public E save(E value) {
-      final Session session = factory.getCurrentSession();
+        final Session session = factory.getCurrentSession();
         session.save(value);
 
         return value;
@@ -29,7 +27,7 @@ public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> imp
 
     @Override
     public List<E> findAll() {
-      final Session session = factory.getCurrentSession();
+        final Session session = factory.getCurrentSession();
         final CriteriaQuery<E> criteria = session.getCriteriaBuilder().createQuery(clazz);
         criteria.from(clazz);
 
@@ -40,8 +38,8 @@ public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> imp
     }
 
     @Override
-    public Optional<E> findById(E id) {
-      final Session session = factory.getCurrentSession();
+    public Optional<E> findById(K id) {
+        final Session session = factory.getCurrentSession();
         final E entity = session.find(clazz, id);
 
         return Optional.ofNullable(entity);
@@ -50,13 +48,13 @@ public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> imp
     @Override
     public void update(E entity) {
 
-      final Session session = factory.getCurrentSession();
+        final Session session = factory.getCurrentSession();
         session.merge(entity);
     }
 
     @Override
     public void delete(K id) {
-      final Session session = factory.getCurrentSession();
+        final Session session = factory.getCurrentSession();
         final E entity = session.find(clazz, id);
         session.delete(entity);
     }
