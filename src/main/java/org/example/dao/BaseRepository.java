@@ -4,17 +4,20 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.criteria.CriteriaQuery;
+import lombok.AllArgsConstructor;
 import lombok.Cleanup;
+import lombok.RequiredArgsConstructor;
 import org.example.entity.BaseEntity;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 //@Cleanup - close resources- (like a  try() )
 // since we don't want to write repo for all Entities- we have created the base class for all repositories,
+@AllArgsConstructor
 public class BaseRepository<K extends Serializable, E extends BaseEntity<K>> implements Repository<K, E> {
 
-    private SessionFactory factory;
     private Class<E> clazz;
+    private SessionFactory factory;
 
     @Override
     public E save(E value) {
